@@ -1,0 +1,17 @@
+@import './tokens.pcss';
+@import './theme.pcss';
+@import './fonts.pcss';
+@import './animation.pcss';
+@import './utility/index.pcss';
+@import './components/index.pcss';
+
+:root {
+	@extend .theme-light;
+}
+
+body {
+	@extend .text-m;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	position: relative;
+}
