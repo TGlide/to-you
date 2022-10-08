@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+</script>
+
+<div class="container">
+	<h1 class="">Hey</h1>
+</div>
+
+<style lang="postcss">
+	.container {
+		& h1 {
+			color: red;
+		}
+	}
+</style>
