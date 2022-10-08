@@ -1,9 +1,10 @@
 import { error, json, type RequestHandler } from '@sveltejs/kit';
-import { databases } from '$lib/appwrite.server';
+import { databases, DB_ID } from '$lib/appwrite';
+import { TODO_COLLECTION_ID } from '$lib/todos';
 
-export const GET: RequestHandler = async (request) => {
+export const GET: RequestHandler = async () => {
 	try {
-		const documents = await databases.listDocuments('63415cd1876844f8311e', '63415ce7a6a6b5cbaf60');
+		const documents = await databases.listDocuments(DB_ID, TODO_COLLECTION_ID);
 		return json(documents);
 	} catch (e) {
 		return error(400, JSON.stringify(e));
