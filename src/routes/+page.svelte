@@ -1,24 +1,33 @@
 <script lang="ts">
 	import Todo from '$components/Todo.svelte';
-	import { subscribeTodosOnMount } from '$lib/todos';
+	import { addTodo, subscribeTodosOnMount } from '$lib/todos';
 
 	export let data: import('./$types').PageData;
 	let todos = data.todos;
 
-	subscribeTodosOnMount((data) => {
-		const todo = data.payload;
-		if (todos.documents.find((t) => t.$id === todo.$id)) {
-			todos = {
-				...todos,
-				documents: todos.documents.map((t) => (t.$id === todo.$id ? todo : t))
-			};
+	subscribeTodosOnMount((event) => {
+		let newDocuments = [...todos.documents];
+		const todo = event.payload;
+		const isDeleteEvent = event.events[0].includes('delete');
+
+		if (isDeleteEvent) {
+			newDocuments = newDocuments.filter((doc) => doc.$id !== todo.$id);
 		} else {
-			todos = {
-				...todos,
-				documents: [todo, ...todos.documents]
-			};
+			const index = newDocuments.findIndex((doc) => doc.$id === todo.$id);
+			if (index === -1) {
+				newDocuments.push(todo);
+			} else {
+				newDocuments[index] = todo;
+			}
 		}
+
+		todos = {
+			...todos,
+			documents: newDocuments
+		};
 	});
+
+	let todoTitle = '';
 </script>
 
 <div class="container">
@@ -27,6 +36,20 @@
 		{#each todos.documents as todo}
 			<Todo {todo} />
 		{/each}
+	</div>
+	<div class="add-wrapper">
+		<input bind:value={todoTitle} />
+		<button
+			on:click={() => {
+				addTodo({
+					title: todoTitle,
+					checked: false
+				});
+				todoTitle = '';
+			}}
+		>
+			Add
+		</button>
 	</div>
 </div>
 
@@ -41,5 +64,14 @@
 
 	.todos {
 		margin-top: var(--space-16);
+	}
+
+	.add-wrapper {
+		margin-top: var(--space-32);
+
+		& button {
+			cursor: pointer;
+			color: teal;
+		}
 	}
 </style>

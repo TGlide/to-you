@@ -1,5 +1,5 @@
 import { isArrayOfType } from '$utils/array';
-import { isObjectType } from '$utils/object';
+import { isObjectType, objectFilter } from '$utils/object';
 import type { Models } from 'appwrite';
 
 export type ModelsDocument<T extends object = object> = Models.Document & T;
@@ -32,4 +32,16 @@ export function isModelsDocumentList<T extends object = object>(
 		total: 'number',
 		documents: (v) => isArrayOfType(v, documentChecker)
 	});
+}
+
+export function strippedDocument<T extends object = object>(doc: ModelsDocument<T>): T {
+	const excludedKeys = [
+		'$id',
+		'$collectionId',
+		'$databaseId',
+		'$createdAt',
+		'$updatedAt',
+		'$permissions'
+	];
+	return objectFilter(doc, (key) => !excludedKeys.includes(key as string)) as T;
 }

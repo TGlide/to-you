@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { updateTodo } from '$lib/todos';
+	import { deleteTodo, updateTodo } from '$lib/todos';
 	import type { TodoDocument } from '$types/todo';
 
 	export let todo: TodoDocument;
@@ -23,9 +23,24 @@
 			// TODO: Show error
 		}
 	};
+
+	const handleDelete = () => {
+		// TODO: optimistic delete
+		deleteTodo(todo.$id);
+	};
 </script>
 
 <div class="todo">
 	<input type="checkbox" checked={todo.checked} on:change={handleChange} />
 	<span>{todo.title}</span>
+	<button on:click={handleDelete}>delete</button>
 </div>
+
+<style lang="postcss">
+	@import 'styles/index.pcss';
+
+	button {
+		cursor: pointer;
+		color: red;
+	}
+</style>

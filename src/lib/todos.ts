@@ -1,4 +1,5 @@
-import { isTodoDocument, type TodoDocument } from '$types/todo';
+import { strippedDocument } from '$types/appwrite';
+import { isTodoDocument, type Todo, type TodoDocument } from '$types/todo';
 import { objectFilter } from '$utils/object';
 import type { RealtimeResponseEvent } from 'appwrite';
 import { onMount } from 'svelte';
@@ -26,14 +27,18 @@ export const subscribeTodosOnMount = (callback: Parameters<typeof subscribeTodos
 };
 
 export const updateTodo = async (data: TodoDocument) => {
-	const excludedKeys = [
-		'$id',
-		'$collectionId',
-		'$databaseId',
-		'$createdAt',
-		'$updatedAt',
-		'$permissions'
-	];
-	const filteredData = objectFilter(data, (key) => !excludedKeys.includes(key as string));
-	return databases.updateDocument<TodoDocument>(DB_ID, TODO_COLLECTION_ID, data.$id, filteredData);
+	return databases.updateDocument<TodoDocument>(
+		DB_ID,
+		TODO_COLLECTION_ID,
+		data.$id,
+		strippedDocument(data)
+	);
+};
+
+export const deleteTodo = async (id: string) => {
+	return databases.deleteDocument(DB_ID, TODO_COLLECTION_ID, id);
+};
+
+export const addTodo = async (data: Todo) => {
+	return databases.createDocument<TodoDocument>(DB_ID, TODO_COLLECTION_ID, 'unique()', data);
 };
