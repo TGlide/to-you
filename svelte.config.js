@@ -7,7 +7,8 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [
 		preprocess({
-			postcss: true
+			postcss: true,
+			scss: true
 		})
 	],
 
@@ -16,7 +17,9 @@ const config = {
 		alias: {
 			$styles: './src/styles',
 			$components: './src/components',
-			$utils: './src/utils'
+			$utils: './src/utils',
+			$lib: './src/lib',
+			$types: './src/types'
 		}
 	}
 };
