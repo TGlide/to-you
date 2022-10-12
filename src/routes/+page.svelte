@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Todo from '$components/Todo.svelte';
 	import { addTodo, subscribeTodosOnMount } from '$lib/todos';
+	import type { PageData } from './$types';
 
-	export let data: import('./$types').PageData;
+	export let data: PageData;
 	let todos = data.todos;
 
 	subscribeTodosOnMount((event) => {
@@ -33,6 +34,7 @@
 <div class="container">
 	<h1>To You</h1>
 	<div class="todos">
+		<h2>Todos</h2>
 		{#each todos.documents as todo}
 			<Todo {todo} />
 		{/each}
@@ -64,6 +66,11 @@
 
 	.todos {
 		margin-top: var(--space-16);
+
+		& h2 {
+			@extend .text-xl;
+			margin-bottom: var(--space-8);
+		}
 	}
 
 	.add-wrapper {

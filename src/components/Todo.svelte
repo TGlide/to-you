@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { deleteTodo, updateTodo } from '$lib/todos';
 	import type { TodoDocument } from '$types/todo';
+	import Checkbox from '$UI/Checkbox.svelte';
 
 	export let todo: TodoDocument;
 
@@ -31,7 +32,7 @@
 </script>
 
 <div class="todo">
-	<input type="checkbox" checked={todo.checked} on:change={handleChange} />
+	<Checkbox checked={todo.checked} on:change={handleChange} />
 	<span>{todo.title}</span>
 	<button on:click={handleDelete}>delete</button>
 </div>

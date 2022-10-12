@@ -19,7 +19,8 @@ const config = {
 			$components: './src/components',
 			$utils: './src/utils',
 			$lib: './src/lib',
-			$types: './src/types'
+			$types: './src/types',
+			$UI: './src/UI'
 		}
 	}
 };
