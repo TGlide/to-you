@@ -32,9 +32,9 @@
 </script>
 
 <div class="container">
-	<h1>To You</h1>
+	<h1 class="text-2xl">To You</h1>
 	<div class="todos">
-		<h2>Todos</h2>
+		<h2 class="text-xl">Todos</h2>
 		{#each todos.documents as todo}
 			<Todo {todo} />
 		{/each}
@@ -56,19 +56,10 @@
 </div>
 
 <style lang="postcss">
-	@import 'styles/index.pcss';
-
-	.container {
-		& h1 {
-			@extend .text-2xl;
-		}
-	}
-
 	.todos {
 		margin-top: var(--space-16);
 
 		& h2 {
-			@extend .text-xl;
 			margin-bottom: var(--space-8);
 		}
 	}

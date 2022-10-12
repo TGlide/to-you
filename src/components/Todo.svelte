@@ -38,8 +38,6 @@
 </div>
 
 <style lang="postcss">
-	@import 'styles/index.pcss';
-
 	button {
 		cursor: pointer;
 		color: red;

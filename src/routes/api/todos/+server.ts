@@ -7,6 +7,7 @@ export const GET: RequestHandler = async () => {
 		const documents = await databases.listDocuments(DB_ID, TODO_COLLECTION_ID);
 		return json(documents);
 	} catch (e) {
-		return error(400, JSON.stringify(e));
+		console.error('api/todos error:', e);
+		throw error(400);
 	}
 };

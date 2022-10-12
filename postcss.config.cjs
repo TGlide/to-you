@@ -1,9 +1,5 @@
 module.exports = {
 	plugins: [
-		require('postcss-import')({
-			addModulesDirectories: ['node_modules', 'src']
-		}),
-		require('postcss-extend-rule'),
 		require('postcss-preset-env')({
 			autoprefixer: {
 				flexbox: 'no-2009'
