@@ -41,9 +41,10 @@ export const actions: Actions = {
 	},
 	update: async ({ request }) => {
 		const data = formDataToObject(await request.formData(), {
-			transformers: { checked: (v) => (v === 'on' ? true : false) },
+			transformers: { checked: (v) => v === 'true' },
 			defaultValues: { checked: false }
 		});
+		console.log(data);
 		if (!isUpdateTodoInput(data)) {
 			throw new Error('Invalid data');
 		}

@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { TodoDocument } from '$types/todo';
+	import Checkbox from '$UI/Checkbox.svelte';
 	import Icon from './Icon.svelte';
 
 	export let todo: TodoDocument;
 </script>
 
 <form
+	class="todo"
 	method="POST"
 	action="/?/delete"
 	use:enhance={({ action }) => {
@@ -14,57 +16,53 @@
 			// Optimistically update the todo
 			todo.checked = !todo.checked;
 
-			return async ({ result }) => {
+			return async ({ result, update }) => {
 				if (['invalid', 'error'].includes(result.type)) {
 					// Revert the optimistic update
 					todo.checked = !todo.checked;
 				}
+
+				update();
 			};
 		}
 	}}
 >
-	<div class="todo">
-		<input type="hidden" name="id" value={todo.$id} />
+	<input type="hidden" name="id" value={todo.$id} />
+	<input type="hidden" name="checked" value={!todo.checked} />
 
-		<div class="checkbox-wrapper">
-			<input type="checkbox" name="checked" checked={!todo.checked} />
-			<!-- TODO: Implement progressively enhanced debouncer -->
-			<button class="btn btn-icon" formaction="/?/update">
-				{#if todo.checked}
-					<Icon icon="check" />
-				{:else}
-					<Icon icon="" />
-				{/if}
-			</button>
-		</div>
+	<!-- TODO: Implement progressively enhanced debouncer -->
+	<Checkbox checked={todo.checked} formaction="/?/update" />
 
+	<div class="title" class:checked={todo.checked}>
 		<span>{todo.title}</span>
-		<button class="btn btn-s btn-danger">delete</button>
 	</div>
+
+	<button class="clickable">
+		<Icon icon="trash-2" />
+	</button>
 </form>
 
 <style lang="postcss">
 	.todo {
 		display: flex;
 		align-items: center;
+		width: 100%;
+	}
 
-		& span {
-			margin-left: var(--space-8);
-		}
+	.title {
+		margin-left: var(--space-8);
+		transition: var(--transition-appearance);
 
-		& > button {
-			margin-left: var(--space-12);
+		&.checked {
+			opacity: 0.5;
 		}
 	}
 
-	.checkbox-wrapper {
-		display: flex;
-		align-items: center;
-		gap: var(--space-4);
-		color: var(--palette-cyan-40);
+	.clickable {
+		display: grid;
+		place-items: center;
 
-		& input {
-			display: none;
-		}
+		color: var(--palette-red-60);
+		margin-left: auto;
 	}
 </style>
