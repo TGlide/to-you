@@ -1,17 +1,19 @@
-.input {
+.btn {
 	background-color: var(--palette-grey-95);
-	border: none;
 	border-radius: var(--radii-s);
+	cursor: pointer;
 	outline: 2px solid var(--outline-color, transparent);
 
 	font-family: var(--ff-body);
-	font-size: 1rem;
 
-	line-height: var(--line-height-m);
-
-	padding: var(--space-8) var(--space-16);
+	padding: var(--space-8) var(--space-12);
 
 	transition: var(--transition-appearance);
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
 
 	&:hover {
 		background-color: var(--palette-grey-90);

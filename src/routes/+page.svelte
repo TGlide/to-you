@@ -35,6 +35,8 @@
 	<div class="add-wrapper">
 		<input class="input" bind:value={todoTitle} placeholder="Title" />
 		<button
+			class="btn"
+			disabled={!todoTitle}
 			on:click={() => {
 				addTodo({
 					title: todoTitle,
@@ -60,16 +62,10 @@
 
 	.todos {
 		margin-top: var(--space-16);
-
-		& h2 {
-			margin-bottom: var(--space-8);
-		}
 	}
 
 	.add-wrapper {
-		& button {
-			cursor: pointer;
-			color: teal;
-		}
+		display: flex;
+		gap: var(--space-8);
 	}
 </style>
