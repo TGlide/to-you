@@ -1,10 +1,10 @@
-import type { Load } from '@sveltejs/kit';
-import { isModelsDocumentList } from '$types/appwrite';
-import { isTodo, isAddTodoInput, type TodoDocument, isUpdateTodoInput } from '$types/todo';
-import type { Actions } from './$types';
-import { formDataToObject, objectFilter } from '$utils/object';
-import { databases } from '$lib/appwrite.server';
 import { DATABASE_ID, TODO_COLLECTION_ID } from '$env/static/private';
+import { databases } from '$lib/appwrite.server';
+import { isModelsDocumentList } from '$types/appwrite';
+import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoDocument } from '$types/todo';
+import { formDataToObject, objectFilter } from '$utils/object';
+import type { Load } from '@sveltejs/kit';
+import type { Actions } from './$types';
 
 export const load: Load = async ({ fetch }) => {
 	const todosRes = await fetch('/api/todos');

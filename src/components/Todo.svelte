@@ -4,34 +4,31 @@
 	import Icon from './Icon.svelte';
 
 	export let todo: TodoDocument;
-
-	const handleChange = async (e: Event) => {
-		e.preventDefault();
-		const target = e.target as HTMLInputElement;
-		const checked = target.checked;
-
-		// Optimistic updates
-		const previousChecked = todo.checked ?? false;
-
-		try {
-			// await updateTodo({
-			// 	...todo,
-			// 	checked
-			// });
-		} catch (e) {
-			// Revert optimistic update
-			target.checked = previousChecked;
-			// TODO: Show error
-		}
-	};
 </script>
 
-<form method="POST" action="/?/delete" use:enhance>
+<form
+	method="POST"
+	action="/?/delete"
+	use:enhance={({ action }) => {
+		if (action.href.includes('update')) {
+			// Optimistically update the todo
+			todo.checked = !todo.checked;
+
+			return async ({ result }) => {
+				if (['invalid', 'error'].includes(result.type)) {
+					// Revert the optimistic update
+					todo.checked = !todo.checked;
+				}
+			};
+		}
+	}}
+>
 	<div class="todo">
 		<input type="hidden" name="id" value={todo.$id} />
 
 		<div class="checkbox-wrapper">
 			<input type="checkbox" name="checked" checked={!todo.checked} />
+			<!-- TODO: Implement progressively enhanced debouncer -->
 			<button class="btn btn-icon" formaction="/?/update">
 				{#if todo.checked}
 					<Icon icon="check" />
@@ -64,6 +61,7 @@
 		display: flex;
 		align-items: center;
 		gap: var(--space-4);
+		color: var(--palette-cyan-40);
 
 		& input {
 			display: none;
