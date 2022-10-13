@@ -42,6 +42,7 @@
 	"dependencies": {
 		"@fontsource/inter": "^4.5.13",
 		"@fontsource/montserrat": "^4.5.13",
-		"appwrite": "^10.1.0"
+		"appwrite": "^10.1.0",
+		"feather-icons": "^4.29.0"
 	}
 }

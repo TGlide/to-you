@@ -36,6 +36,9 @@
 	}
 
 	.todos {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-12);
 		margin-top: var(--space-16);
 	}
 

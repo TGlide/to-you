@@ -1,7 +1,7 @@
 import { DATABASE_ID, TODO_COLLECTION_ID } from '$env/static/private';
 import { databases } from '$lib/appwrite.server';
 import { strippedDocument } from '$types/appwrite';
-import { isTodoDocument, isTodoInput, type TodoDocument } from '$types/todo';
+import { isTodoDocument, isAddTodoInput, type TodoDocument } from '$types/todo';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {
@@ -17,7 +17,7 @@ export const GET: RequestHandler = async () => {
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const data = await request.json();
-		if (!isTodoInput(data)) {
+		if (!isAddTodoInput(data)) {
 			throw new Error('Invalid data');
 		}
 

@@ -45,7 +45,6 @@ export const isObjectType = <T>(object: unknown, keyTypesMap: KeyTypesMap<T>): o
 	}
 
 	for (const [key, check] of objectEntries(keyTypesMap)) {
-		if (!(key in object)) return false;
 		const value = (object as Record<keyof T, unknown>)[key];
 
 		if (typeof check === 'function') {
@@ -113,10 +112,24 @@ export function objectMapKeys<K extends PropertyKey, V>(
 	return result;
 }
 
-export function formDataToObject(formData: FormData): Record<string, unknown> {
-	const obj: Record<string, unknown> = {};
+type FormDataToObjectOptions = {
+	transformers?: Record<string, (v: unknown) => unknown>;
+	defaultValues?: Record<string, unknown>;
+};
+
+export function formDataToObject(
+	formData: FormData,
+	options: FormDataToObjectOptions = {}
+): Record<string, unknown> {
+	const { transformers = {}, defaultValues = {} } = options;
+
+	const obj: Record<string, unknown> = defaultValues;
 	for (const [key, value] of formData.entries()) {
-		obj[key] = value;
+		if (transformers && key in transformers) {
+			obj[key] = transformers[key](value);
+		} else {
+			obj[key] = value;
+		}
 	}
 	return obj;
 }

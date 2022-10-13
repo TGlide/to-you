@@ -29,3 +29,28 @@
 		}
 	}
 }
+
+.btn-danger {
+	color: var(--palette-red-60);
+
+	&:not(:disabled) {
+		&:focus,
+		&:active {
+			--outline-color: var(--palette-red-60);
+		}
+	}
+}
+
+.btn-s {
+	font-size: var(--fs-s);
+	line-height: var(--line-height-s);
+	padding: var(--space-4) var(--space-8);
+}
+
+.btn-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: var(--space-4) var(--space-4);
+}
