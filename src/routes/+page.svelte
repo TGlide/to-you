@@ -32,15 +32,8 @@
 </script>
 
 <div class="container">
-	<h1 class="text-2xl">To You</h1>
-	<div class="todos">
-		<h2 class="text-xl">Todos</h2>
-		{#each todos.documents as todo}
-			<Todo {todo} />
-		{/each}
-	</div>
 	<div class="add-wrapper">
-		<input bind:value={todoTitle} />
+		<input class="input" bind:value={todoTitle} placeholder="Title" />
 		<button
 			on:click={() => {
 				addTodo({
@@ -53,9 +46,18 @@
 			Add
 		</button>
 	</div>
+	<div class="todos">
+		{#each todos.documents as todo}
+			<Todo {todo} />
+		{/each}
+	</div>
 </div>
 
 <style lang="postcss">
+	.container {
+		padding-top: var(--space-32);
+	}
+
 	.todos {
 		margin-top: var(--space-16);
 
@@ -65,8 +67,6 @@
 	}
 
 	.add-wrapper {
-		margin-top: var(--space-32);
-
 		& button {
 			cursor: pointer;
 			color: teal;

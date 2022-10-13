@@ -5,6 +5,7 @@ import { TODO_COLLECTION_ID } from '$lib/todos';
 export const GET: RequestHandler = async () => {
 	try {
 		const documents = await databases.listDocuments(DB_ID, TODO_COLLECTION_ID);
+
 		return json(documents);
 	} catch (e) {
 		console.error('api/todos error:', e);

@@ -1,0 +1,24 @@
+.input {
+	background-color: hsla(var(--palette-grey-90-hsl) / 0.5);
+	border: none;
+	border-radius: var(--radii-s);
+
+	font-family: var(--ff-body);
+	font-size: 1rem;
+
+	line-height: var(--line-height-m);
+
+	padding: var(--space-8) var(--space-16);
+
+	transition: background var(--transition-appearance);
+
+	&:hover {
+		background-color: hsla(var(--palette-grey-90-hsl) / 0.65);
+	}
+
+	&:focus,
+	&:active {
+		background-color: hsla(var(--palette-grey-90-hsl) / 0.75);
+		outline: 2px solid var(--palette-cyan-40);
+	}
+}
