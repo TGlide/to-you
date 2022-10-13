@@ -1,52 +1,27 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { enhance } from '$app/forms';
 	import Todo from '$components/Todo.svelte';
-	import { addTodo, subscribeTodosOnMount } from '$lib/todos';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let todos = data.todos;
-
-	subscribeTodosOnMount((event) => {
-		let newDocuments = [...todos.documents];
-		const todo = event.payload;
-		const isDeleteEvent = event.events[0].includes('delete');
-
-		if (isDeleteEvent) {
-			newDocuments = newDocuments.filter((doc) => doc.$id !== todo.$id);
-		} else {
-			const index = newDocuments.findIndex((doc) => doc.$id === todo.$id);
-			if (index === -1) {
-				newDocuments.push(todo);
-			} else {
-				newDocuments[index] = todo;
-			}
-		}
-
-		todos = {
-			...todos,
-			documents: newDocuments
-		};
-	});
+	$: todos = data.todos;
 
 	let todoTitle = '';
 </script>
 
 <div class="container">
 	<div class="add-wrapper">
-		<input class="input" bind:value={todoTitle} placeholder="Title" />
-		<button
-			class="btn"
-			disabled={!todoTitle}
-			on:click={() => {
-				addTodo({
-					title: todoTitle,
-					checked: false
-				});
+		<form
+			method="POST"
+			action="?/add"
+			use:enhance={() => {
 				todoTitle = '';
 			}}
 		>
-			Add
-		</button>
+			<input class="input" bind:value={todoTitle} placeholder="Title" name="title" />
+			<button class="btn" disabled={browser && !todoTitle}>Add</button>
+		</form>
 	</div>
 	<div class="todos">
 		{#each todos.documents as todo}

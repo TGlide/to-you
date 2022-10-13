@@ -5,6 +5,8 @@
 	outline: 2px solid var(--outline-color, transparent);
 
 	font-family: var(--ff-body);
+	font-size: var(--fs-m);
+	line-height: var(--line-height-m);
 
 	padding: var(--space-8) var(--space-12);
 
@@ -15,13 +17,15 @@
 		opacity: 0.5;
 	}
 
-	&:hover {
-		background-color: var(--palette-grey-90);
-	}
+	&:not(:disabled) {
+		&:hover {
+			background-color: var(--palette-grey-90);
+		}
 
-	&:focus,
-	&:active {
-		background-color: var(--palette-grey-95);
-		--outline-color: var(--palette-cyan-40);
+		&:focus,
+		&:active {
+			background-color: var(--palette-grey-95);
+			--outline-color: var(--palette-cyan-40);
+		}
 	}
 }

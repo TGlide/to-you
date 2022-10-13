@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { deleteTodo, updateTodo } from '$lib/todos';
 	import type { TodoDocument } from '$types/todo';
 	import Checkbox from '$UI/Checkbox.svelte';
 
@@ -14,10 +13,10 @@
 		const previousChecked = todo.checked ?? false;
 
 		try {
-			await updateTodo({
-				...todo,
-				checked
-			});
+			// await updateTodo({
+			// 	...todo,
+			// 	checked
+			// });
 		} catch (e) {
 			// Revert optimistic update
 			target.checked = previousChecked;
@@ -27,7 +26,7 @@
 
 	const handleDelete = () => {
 		// TODO: optimistic delete
-		deleteTodo(todo.$id);
+		// deleteTodo(todo.$id);
 	};
 </script>
 

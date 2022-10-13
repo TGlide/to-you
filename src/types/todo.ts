@@ -6,12 +6,20 @@ export type Todo = {
 	checked?: boolean;
 };
 
+export type TodoInput = Pick<Todo, 'title'>;
+
 export type TodoDocument = ModelsDocument<Todo>;
 
 export function isTodo(value: unknown): value is Todo {
 	return isObjectType<Todo>(value, {
 		title: 'string',
 		checked: ['undefined', 'boolean']
+	});
+}
+
+export function isTodoInput(value: unknown): value is TodoInput {
+	return isObjectType<TodoInput>(value, {
+		title: 'string'
 	});
 }
 
