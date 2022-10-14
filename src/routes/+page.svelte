@@ -3,7 +3,7 @@
 	import { enhance } from '$app/forms';
 	import Todo from '$components/Todo.svelte';
 	import { flip } from 'svelte/animate';
-	import { fade, scale } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
