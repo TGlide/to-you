@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import Todo from '$components/Todo.svelte';
+	import type { TodoDocument } from '$types/todo';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
@@ -16,6 +17,12 @@
 	let todoTitle = '';
 	let todoPoints = 1;
 	let titleEl: HTMLInputElement;
+
+	const updateTodo = (e: CustomEvent<TodoDocument>) => {
+		const todo = e.detail;
+		const index = data.todos.documents.findIndex((t) => t.$id === todo.$id);
+		if (index !== -1) data.todos.documents[index] = todo;
+	};
 </script>
 
 <div class="container">
@@ -50,7 +57,7 @@
 	<div class="todos">
 		{#each todos as todo (todo.$id)}
 			<div animate:flip={{ duration: 500 }} in:fade out:fade={{ duration: 100 }}>
-				<Todo {todo} />
+				<Todo {todo} on:update={updateTodo} />
 			</div>
 		{/each}
 	</div>

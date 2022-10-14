@@ -2,6 +2,7 @@ import { DATABASE_ID, TODO_COLLECTION_ID } from '$env/static/private';
 import { databases } from '$lib/appwrite.server';
 import { isModelsDocumentList } from '$types/appwrite';
 import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoDocument } from '$types/todo';
+import { sleep } from '$utils/async';
 import { formDataToObject, objectFilter } from '$utils/object';
 import type { Load } from '@sveltejs/kit';
 import type { Actions } from './$types';
@@ -44,11 +45,11 @@ export const actions: Actions = {
 			transformers: { checked: (v) => v === 'true' },
 			defaultValues: { checked: false }
 		});
-		console.log(data);
 		if (!isUpdateTodoInput(data)) {
 			throw new Error('Invalid data');
 		}
 
+		await sleep(2000);
 		const updateObj = objectFilter(data, (k) => k !== 'id');
 
 		await databases.updateDocument<TodoDocument>(

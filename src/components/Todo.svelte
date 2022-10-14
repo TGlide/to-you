@@ -2,9 +2,14 @@
 	import { enhance } from '$app/forms';
 	import type { TodoDocument } from '$types/todo';
 	import Checkbox from '$UI/Checkbox.svelte';
+	import { createEventDispatcher } from 'svelte';
 	import Icon from './Icon.svelte';
 
 	export let todo: TodoDocument;
+
+	const dispatch = createEventDispatcher<{
+		update: TodoDocument;
+	}>();
 </script>
 
 <form
@@ -14,15 +19,17 @@
 	use:enhance={({ action }) => {
 		if (action.href.includes('update')) {
 			// Optimistically update the todo
-			todo.checked = !todo.checked;
+			const oldTodo = { ...todo };
+			dispatch('update', { ...oldTodo, checked: !todo.checked });
 
-			return async ({ result, update }) => {
+			return async ({ result, update: _update }) => {
 				if (['invalid', 'error'].includes(result.type)) {
 					// Revert the optimistic update
-					todo.checked = !todo.checked;
+					dispatch('update', { ...oldTodo });
 				}
 
-				update();
+				// We don't call update to prevent the page data to being updated with old data
+				// TODO: Find a better way to do this
 			};
 		}
 	}}
