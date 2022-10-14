@@ -24,6 +24,7 @@
 		action="?/add"
 		use:enhance={() => {
 			todoTitle = '';
+			todoPoints = 1;
 		}}
 	>
 		<input class="input title" bind:value={todoTitle} placeholder="Todo title" name="title" />
