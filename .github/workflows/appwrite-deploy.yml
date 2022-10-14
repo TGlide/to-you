@@ -16,5 +16,7 @@ jobs:
             --endpoint='${{ secrets.APPWRITE_ENDPOINT }}' \
             --projectId='${{ secrets.APPWRITE_PROJECT_ID }}' \
             --key='${{ secrets.APPWRITE_API_KEY }}'
+      - name: Init collection
+        run: appwrite init collection --all
       - name: Deploy
         run: appwrite deploy collection --all --yes
