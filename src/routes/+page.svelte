@@ -14,6 +14,7 @@
 	});
 
 	let todoTitle = '';
+	let todoPoints = 1;
 </script>
 
 <div class="container">
@@ -25,7 +26,15 @@
 			todoTitle = '';
 		}}
 	>
-		<input class="input" bind:value={todoTitle} placeholder="Title" name="title" />
+		<input class="input title" bind:value={todoTitle} placeholder="Todo title" name="title" />
+		<input
+			class="input points"
+			bind:value={todoPoints}
+			type="number"
+			name="points"
+			min="1"
+			max="10"
+		/>
 		<button class="btn" disabled={browser && !todoTitle}>Add</button>
 	</form>
 
@@ -52,10 +61,20 @@
 
 	.add-wrapper {
 		display: flex;
+		align-items: center;
 		gap: var(--space-8);
+		width: 100%;
 
 		& input {
-			flex-grow: 1;
+			min-width: 0;
+
+			&.title {
+				flex: 1 1 auto;
+			}
+
+			&.points {
+				flex-basis: 6.25rem;
+			}
 		}
 	}
 </style>

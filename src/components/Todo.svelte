@@ -37,6 +37,11 @@
 		<span>{todo.title}</span>
 	</div>
 
+	<div class="points">
+		<span>{todo.points}</span>
+		<Icon icon="star" />
+	</div>
+
 	<button class="clickable">
 		<Icon icon="trash-2" />
 	</button>
@@ -58,11 +63,22 @@
 		}
 	}
 
+	.points {
+		display: flex;
+		align-items: center;
+		gap: var(--space-4);
+
+		color: var(--palette-cyan-30);
+		font-weight: var(--fw-bold);
+
+		margin-left: auto;
+	}
+
 	.clickable {
 		display: grid;
 		place-items: center;
 
 		color: var(--palette-red-60);
-		margin-left: auto;
+		margin-left: var(--space-12);
 	}
 </style>

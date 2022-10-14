@@ -1,6 +1,7 @@
 .clickable {
 	cursor: pointer;
 	transition: opacity var(--transition-appearance);
+	border-radius: var(--radii-xs);
 
 	&:hover {
 		opacity: 0.7;
@@ -8,6 +9,10 @@
 
 	&:active {
 		opacity: 0.3;
+	}
+
+	&:focus {
+		outline: 2px solid currentColor;
 	}
 }
 
