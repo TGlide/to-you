@@ -15,6 +15,7 @@
 
 	let todoTitle = '';
 	let todoPoints = 1;
+	let titleEl: HTMLInputElement;
 </script>
 
 <div class="container">
@@ -25,9 +26,16 @@
 		use:enhance={() => {
 			todoTitle = '';
 			todoPoints = 1;
+			titleEl.focus();
 		}}
 	>
-		<input class="input title" bind:value={todoTitle} placeholder="Todo title" name="title" />
+		<input
+			bind:this={titleEl}
+			class="input title"
+			bind:value={todoTitle}
+			placeholder="Todo title"
+			name="title"
+		/>
 		<input
 			class="input points"
 			bind:value={todoPoints}

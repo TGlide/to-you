@@ -1,0 +1,51 @@
+{
+    "projectId": "63406794286b876f3df9",
+    "projectName": "To-You",
+    "collections": [
+        {
+            "$id": "63415ce7a6a6b5cbaf60",
+            "$createdAt": "2022-10-08T11:20:07.682+00:00",
+            "$updatedAt": "2022-10-08T20:04:07.731+00:00",
+            "$permissions": [
+                "read(\"any\")",
+                "update(\"any\")",
+                "create(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "63415cd1876844f8311e",
+            "name": "to-dos",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "checked",
+                    "type": "boolean",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "title",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "points",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": 1,
+                    "max": 10,
+                    "default": 1
+                }
+            ],
+            "indexes": []
+        }
+    ]
+}
