@@ -49,7 +49,6 @@ export const actions: Actions = {
 			throw new Error('Invalid data');
 		}
 
-		await sleep(2000);
 		const updateObj = objectFilter(data, (k) => k !== 'id');
 
 		await databases.updateDocument<TodoDocument>(
