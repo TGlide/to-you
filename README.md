@@ -1,38 +1,100 @@
-# create-svelte
+<p align="center">
+  <h3 align="center">To You</h3> <!-- EDIT -->
+  <p align="center">
+    Another to-do app for you, where completing tasks lead to great rewards.
+  </p>
+  <!-- EDIT: Head over to https://shields.io/ to generate some beautiful shields! -->
+  <p align="center">
+  <a href="https://kit.svelte.dev/">
+      <img src="https://img.shields.io/badge/Frontend-SvelteKit-%23FF3E00?style=for-the-badge&logo=svelte" alt="Frontend SvelteKit">
+    </a>
+    <a href="https://appwrite.io/">
+      <img src="https://img.shields.io/badge/Backend-Appwrite-%23F02E65?style=for-the-badge&logo=appwrite" alt="Backend Appwrite">
+    </a>
+  </p>
+</p>
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+<!-- EDIT: TABLE OF CONTENTS -->
 
-## Creating a project
+## Table of Contents
 
-If you're seeing this, you've probably already done this step. Congrats!
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+    - [1. Clone the repo](#1-clone-the-repo)
+    - [2. Install front-end dependencies](#2-install-front-end-dependencies)
+    - [3. Setup appwrite instance](#3-setup-appwrite-instance)
+    - [4. Setup environment variables](#4-setup-environment-variables)
+- [Usage](#usage)
+  - [Run App](#run-app)
+  - [Preview](#preview)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## About The Project
 
-# create a new project in my-app
-npm create svelte@latest my-app
+This is a to-do app where you can add simple tasks, that are associated with points, and rewards, that are unlocked with the points you earn.
+
+### Built With
+
+<!-- EDIT -->
+- Frontend
+  - [Svelte Kit](https://kit.svelte.dev/) 
+- Backend
+  - [Appwrite](https://appwrite.io/)
+
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+`yarn` and `docker` installed on your local machine.
+
+### Installation
+
+#### 1. Clone the repo
+
+```sh
+git clone https://github.com/tglide/to-you
+cd to-you
 ```
 
-## Developing
+#### 2. Install front-end dependencies
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+yarn
 ```
 
-## Building
+#### 3. Setup appwrite instance
 
-To create a production version of your app:
+Head over to https://appwrite.io/docs/installation and follow the instructions to setup appwrite on your local machine.
 
-```bash
-npm run build
+Add a database, and a collection with the attributes `title`, `points`, and `checked`.
+
+<!-- TODO: Improve workflow -->
+
+#### 4. Setup environment variables
+
+You'll need to setup the following environment variables in a `.env` file in the root directory.
+
+```sh
+APPWRITE_ENDPOINT
+APPWRITE_PROJECT_ID
+TODO_COLLECTION_ID
+DATABASE_ID
 ```
 
-You can preview the production build with `npm run preview`.
+## Usage
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+### Run App
+
+```sh
+yarn dev
+```
+
+### Preview
+
+You can check out a live preview at: https://to-you-peach.vercel.app/
+
