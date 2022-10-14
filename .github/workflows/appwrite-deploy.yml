@@ -6,12 +6,15 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Install Appwrite CLI
+        shell: bash
+        run: curl -sL https://appwrite.io/cli/install.sh | bash
       - name: Setup Appwrite CLI
-        uses: appwrite/setup-for-actions@v1
-        with:
-          endpoint: '${{ secrets.APPWRITE_ENDPOINT }}'
-          project: '${{ secrets.APPWRITE_PROJECT_ID }}'
-          key: '${{ secrets.APPWRITE_API_KEY }}'
-          locale: test
+        shell: bash
+        run: |
+          appwrite client \
+            --endpoint='${{ secrets.APPWRITE_ENDPOINT }}' \
+            --projectId='${{ secrets.APPWRITE_PROJECT_ID }}' \
+            --key='${{ secrets.APPWRITE_API_KEY }}'
       - name: Deploy
         run: appwrite deploy collections --all --yes
