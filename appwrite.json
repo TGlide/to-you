@@ -1,0 +1,51 @@
+{
+    "collections": [
+        {
+            "$createdAt": "2022-10-14T10:17:21.612+00:00",
+            "$id": "63415ce7a6a6b5cbaf60",
+            "$permissions": [
+                "read(\"any\")",
+                "update(\"any\")",
+                "create(\"any\")",
+                "delete(\"any\")"
+            ],
+            "$updatedAt": "2022-10-14T10:17:21.612+00:00",
+            "attributes": [
+                {
+                    "array": false,
+                    "default": false,
+                    "key": "checked",
+                    "required": false,
+                    "status": "available",
+                    "type": "boolean"
+                },
+                {
+                    "array": false,
+                    "default": null,
+                    "key": "title",
+                    "required": true,
+                    "size": 128,
+                    "status": "available",
+                    "type": "string"
+                },
+                {
+                    "array": false,
+                    "default": 1,
+                    "key": "points",
+                    "max": 10,
+                    "min": 1,
+                    "required": false,
+                    "status": "available",
+                    "type": "integer"
+                }
+            ],
+            "databaseId": "63415cd1876844f8311e",
+            "documentSecurity": false,
+            "enabled": true,
+            "indexes": [],
+            "name": "to-dos"
+        }
+    ],
+    "projectId": "63494cccb4fcd58db6d0",
+    "projectName": ""
+}

@@ -28,6 +28,7 @@
     - [2. Install front-end dependencies](#2-install-front-end-dependencies)
     - [3. Setup appwrite instance](#3-setup-appwrite-instance)
     - [4. Setup environment variables](#4-setup-environment-variables)
+    - [5. Setup appwrite database & collections](#5-setup-appwrite-database--collections)
 - [Usage](#usage)
   - [Run App](#run-app)
   - [Preview](#preview)
@@ -70,10 +71,9 @@ yarn
 #### 3. Setup appwrite instance
 
 Head over to https://appwrite.io/docs/installation and follow the instructions to setup appwrite on your local machine.
+You'll also need to install the Appwrite CLI.
 
-Add a database, and a collection with the attributes `title`, `points`, and `checked`.
-
-<!-- TODO: Improve workflow -->
+After that, create a new project, and create an API key.
 
 #### 4. Setup environment variables
 
@@ -82,6 +82,15 @@ You'll need to setup the following environment variables in a `.env` file in the
 ```sh
 APPWRITE_ENDPOINT
 APPWRITE_PROJECT_ID
+APPWRITE_API_KEY
+```
+
+#### 5. Setup appwrite database & collections
+
+Run the `aw:local` script to setup the appwrite CLI, then run `appwrite deploy collection --all` to deploy the collections and database.
+Setup the rest of the environment variables in the `.env` file:
+
+```sh
 TODO_COLLECTION_ID
 DATABASE_ID
 ```
