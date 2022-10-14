@@ -17,4 +17,4 @@ jobs:
             --projectId='${{ secrets.APPWRITE_PROJECT_ID }}' \
             --key='${{ secrets.APPWRITE_API_KEY }}'
       - name: Deploy
-        run: appwrite deploy collections --all --yes
+        run: appwrite deploy collection --all --yes
