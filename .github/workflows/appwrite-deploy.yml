@@ -2,14 +2,16 @@ name: Appwrite Deploy
 on: [push]
 
 jobs:
-  setup:
-    name: Setup Appwrite
-    runs-on: ubuntu-latest
-    - uses: appwrite/setup-for-actions@v1
-      with:
-        endpoint: '${{ secrets.APPWRITE_ENDPOINT }}'
-        project: '${{ secrets.APPWRITE_PROJECT_ID }}'
-        key: '${{ secrets.APPWRITE_API_KEY }}'
   deploy:
     name: Deploy
-    run: appwrite deploy collections --all --yes 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Appwrite CLI
+        uses: appwrite/setup-for-actions@v1
+        with:
+          endpoint: '${{ secrets.APPWRITE_ENDPOINT }}'
+          project: '${{ secrets.APPWRITE_PROJECT_ID }}'
+          key: '${{ secrets.APPWRITE_API_KEY }}'
+
+      - name: Deploy
+        run: appwrite deploy collections --all --yes
