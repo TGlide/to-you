@@ -89,7 +89,7 @@
 			}
 
 			&.points {
-				flex-basis: 6.25rem;
+				flex-basis: 5rem;
 			}
 		}
 	}

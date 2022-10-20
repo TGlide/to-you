@@ -1,12 +1,10 @@
 .btn {
+	@extend .text-m;
+
 	background-color: var(--palette-grey-95);
 	border-radius: var(--radii-s);
 	cursor: pointer;
 	outline: 2px solid var(--outline-color, transparent);
-
-	font-family: var(--ff-body);
-	font-size: var(--fs-m);
-	line-height: var(--line-height-m);
 
 	padding: var(--space-8) var(--space-12);
 
@@ -26,6 +24,23 @@
 		&:active {
 			background-color: var(--palette-grey-95);
 			--outline-color: var(--palette-cyan-40);
+		}
+	}
+}
+
+.btn-success {
+	background-color: var(--palette-green-95);
+	color: var(--palette-green-20);
+
+	&:not(:disabled) {
+		&:hover {
+			background-color: var(--palette-green-90);
+		}
+
+		&:focus,
+		&:active {
+			background-color: var(--palette-green-95);
+			--outline-color: var(--palette-green-40);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 module.exports = {
 	plugins: [
+		require('postcss-extend-rule'),
 		require('postcss-preset-env')({
 			autoprefixer: {
 				flexbox: 'no-2009'

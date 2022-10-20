@@ -1,17 +1,19 @@
 import { DATABASE_ID, TODO_COLLECTION_ID } from '$env/static/private';
+import { isAuthenticated } from '$lib/account.server';
 import { databases } from '$lib/appwrite.server';
 import { isModelsDocumentList } from '$types/appwrite';
 import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoDocument } from '$types/todo';
-import { sleep } from '$utils/async';
+
 import { formDataToObject, objectFilter } from '$utils/object';
-import type { Load } from '@sveltejs/kit';
+import { redirect, type Load } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
-export const load: Load = async ({ fetch }) => {
-	const todosRes = await fetch('/api/todos');
-	if (!todosRes.ok) throw new Error('Failed to load todos');
+export const load: Load = async () => {
+	if (!(await isAuthenticated())) {
+		throw redirect(307, '/login');
+	}
 
-	const todos = await todosRes.json();
+	const todos = await databases.listDocuments(DATABASE_ID, TODO_COLLECTION_ID);
 
 	if (isModelsDocumentList(todos, isTodo)) {
 		return {

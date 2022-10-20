@@ -1,5 +1,5 @@
 {
   "cssvar.files": [
-    "./src/styles/tokens.pcss"
+    "src/styles/tokens.pcss"
   ]
 }

@@ -1,13 +1,21 @@
 .mb-4 {
-  margin-bottom: var(--space-4);
+	margin-bottom: var(--space-4);
 }
 
 .mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .py {
-  padding-top: var(--py, var(--space-16)) !important;
-  padding-bottom: var(--py, var(--space-16)) !important;
+	padding-top: var(--py, var(--space-16)) !important;
+	padding-bottom: var(--py, var(--space-16)) !important;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.flow > * + * {
+	margin-top: var(--flow-gap, var(--space-8));
 }

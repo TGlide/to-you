@@ -1,6 +1,6 @@
 import { isArrayOfType } from '$utils/array';
 import { isObjectType, objectFilter } from '$utils/object';
-import type { Models } from 'appwrite';
+import type { AppwriteException, Models } from 'appwrite';
 
 export type ModelsDocument<T extends object = object> = Models.Document & T;
 
@@ -44,4 +44,12 @@ export function strippedDocument<T extends object = object>(doc: ModelsDocument<
 		'$permissions'
 	];
 	return objectFilter(doc, (key) => !excludedKeys.includes(key as string)) as T;
+}
+
+type PickedAppwriteException = Pick<AppwriteException, 'code' | 'type'>;
+export function isAppwriteException(value: unknown): value is PickedAppwriteException {
+	return isObjectType<PickedAppwriteException>(value, {
+		code: 'number',
+		type: 'string'
+	});
 }
