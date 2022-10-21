@@ -18,6 +18,7 @@
 		"@playwright/test": "^1.25.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
+		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
 		"autoprefixer": "^10.4.7",
@@ -46,6 +47,7 @@
 		"@fontsource/inter": "^4.5.13",
 		"@fontsource/montserrat": "^4.5.13",
 		"appwrite": "^10.1.0",
-		"feather-icons": "^4.29.0"
+		"feather-icons": "^4.29.0",
+		"uuid": "^9.0.0"
 	}
 }

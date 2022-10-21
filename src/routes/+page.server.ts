@@ -1,23 +1,24 @@
 import { DATABASE_ID, TODO_COLLECTION_ID } from '$env/static/private';
-import { isAuthenticated } from '$lib/account.server';
 import { databases } from '$lib/appwrite.server';
 import { isModelsDocumentList } from '$types/appwrite';
 import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoDocument } from '$types/todo';
 
 import { formDataToObject, objectFilter } from '$utils/object';
-import { redirect, type Load } from '@sveltejs/kit';
-import type { Actions } from './$types';
 
-export const load: Load = async () => {
-	if (!(await isAuthenticated())) {
-		throw redirect(307, '/login');
-	}
+import { getSession } from '$lib/session.server';
+import type { Actions, PageServerLoad } from './$types';
+import { Query } from 'appwrite';
 
-	const todos = await databases.listDocuments(DATABASE_ID, TODO_COLLECTION_ID);
+export const load: PageServerLoad = async ({ cookies }) => {
+	const session = getSession(cookies);
+	const todos = await databases.listDocuments(DATABASE_ID, TODO_COLLECTION_ID, [
+		Query.equal('session_key', session)
+	]);
 
 	if (isModelsDocumentList(todos, isTodo)) {
 		return {
-			todos
+			todos,
+			session
 		};
 	}
 
@@ -25,13 +26,17 @@ export const load: Load = async () => {
 };
 
 export const actions: Actions = {
-	add: async ({ request }) => {
+	add: async ({ request, cookies }) => {
+		const session = getSession(cookies);
 		const data = formDataToObject(await request.formData());
 		if (!isAddTodoInput(data)) {
 			throw new Error('Invalid data');
 		}
 
-		await databases.createDocument<TodoDocument>(DATABASE_ID, TODO_COLLECTION_ID, 'unique()', data);
+		await databases.createDocument<TodoDocument>(DATABASE_ID, TODO_COLLECTION_ID, 'unique()', {
+			...data,
+			session_key: session
+		});
 	},
 	delete: async ({ request }) => {
 		const { id } = formDataToObject(await request.formData());
