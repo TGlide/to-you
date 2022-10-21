@@ -1,51 +1,72 @@
 {
     "collections": [
         {
-            "$createdAt": "2022-10-14T10:17:21.612+00:00",
             "$id": "63415ce7a6a6b5cbaf60",
+            "$createdAt": "2022-10-21T00:13:43.278+00:00",
+            "$updatedAt": "2022-10-21T00:13:43.278+00:00",
             "$permissions": [
                 "read(\"any\")",
                 "update(\"any\")",
                 "create(\"any\")",
                 "delete(\"any\")"
             ],
-            "$updatedAt": "2022-10-14T10:17:21.612+00:00",
+            "databaseId": "63415cd1876844f8311e",
+            "name": "to-dos",
+            "enabled": true,
+            "documentSecurity": false,
             "attributes": [
                 {
-                    "array": false,
-                    "default": false,
-                    "key": "checked",
-                    "required": false,
-                    "status": "available",
-                    "type": "boolean"
-                },
-                {
-                    "array": false,
-                    "default": null,
                     "key": "title",
-                    "required": true,
-                    "size": 128,
+                    "type": "string",
                     "status": "available",
-                    "type": "string"
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
                 },
                 {
-                    "array": false,
-                    "default": 1,
-                    "key": "points",
-                    "max": 10,
-                    "min": 1,
-                    "required": false,
+                    "key": "checked",
+                    "type": "boolean",
                     "status": "available",
-                    "type": "integer"
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "points",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": 1,
+                    "max": 10,
+                    "default": 1
+                },
+                {
+                    "key": "session_key",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
                 }
             ],
-            "databaseId": "63415cd1876844f8311e",
-            "documentSecurity": false,
-            "enabled": true,
-            "indexes": [],
-            "name": "to-dos"
+            "indexes": [
+                {
+                    "key": "session",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "session_key"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
         }
     ],
-    "projectId": "6351e3fd8d9dc083862e",
+    "projectId": "6348b1400e6895f622ab",
     "projectName": ""
 }
