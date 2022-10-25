@@ -1,5 +1,8 @@
 {
   "cssvar.files": [
     "src/styles/tokens.pcss"
-  ]
+  ],
+  "svelte.plugin.svelte.compilerWarnings": {
+    "css-unused-selector": "ignore"
+  }
 }

@@ -7,7 +7,9 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [
 		preprocess({
-			postcss: true,
+			postcss: {
+				prependData: '@import "index.pcss";'
+			},
 			scss: true
 		})
 	],
