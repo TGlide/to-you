@@ -17,8 +17,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	if (isModelsDocumentList(todos, isTodo)) {
 		return {
-			todos,
-			session
+			todos
 		};
 	}
 
