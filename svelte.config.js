@@ -24,6 +24,14 @@ const config = {
 			$types: './src/types',
 			$UI: './src/UI'
 		}
+	},
+	onwarn: (warning, defaultHandler) => {
+		// Disable warning about unused CSS selectors, since we use postcss-import, and
+		// svelte purges it anyway.
+		if (warning.code === 'css-unused-selector') return;
+
+		// Handle all other warnings normally
+		defaultHandler?.(warning);
 	}
 };
 
