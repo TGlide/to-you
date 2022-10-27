@@ -111,7 +111,9 @@ You can check out a live preview at: https://to-you-peach.vercel.app/
 ## To-do
 A to-do app repo wouldn't be complete without it's own to-do list!
 
-- [ ] Deletion progressive enhancement
+- [X] Browser session
+- [X] Addition progressive enhancement
+- [X] Deletion progressive enhancement
 - [ ] Update progressive enhancement
 - [ ] Rewards system
 - [ ] Keyboard controls

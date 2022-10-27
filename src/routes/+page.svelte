@@ -52,7 +52,7 @@
 		todoPoints = 1;
 		titleEl.focus();
 
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			if (['invalid', 'error'].includes(result.type)) {
 				// Revert the optimistic update
 				todoStore.remove(tempTodo.$id);
