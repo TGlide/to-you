@@ -32,6 +32,7 @@
 - [Usage](#usage)
   - [Run App](#run-app)
   - [Preview](#preview)
+- [To-do](#to-do)
 
 ## About The Project
 
@@ -107,3 +108,10 @@ yarn dev
 
 You can check out a live preview at: https://to-you-peach.vercel.app/
 
+## To-do
+A to-do app repo wouldn't be complete without it's own to-do list!
+
+- [ ] Deletion progressive enhancement
+- [ ] Update progressive enhancement
+- [ ] Rewards system
+- [ ] Keyboard controls
