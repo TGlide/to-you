@@ -11,7 +11,6 @@
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
-	type DataDocuments = typeof data.todos.documents;
 	$todoStore = data.todos.documents;
 
 	$: todos = $todoStore.sort((a, b) => {
