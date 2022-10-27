@@ -22,7 +22,8 @@ const config = {
 			$utils: './src/utils',
 			$lib: './src/lib',
 			$types: './src/types',
-			$UI: './src/UI'
+			$UI: './src/UI',
+			$stores: './src/stores'
 		}
 	},
 	onwarn: (warning, defaultHandler) => {

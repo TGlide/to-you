@@ -4,6 +4,7 @@
 	import Todo from '$components/Todo.svelte';
 	import { isAddTodoInput, type TodoDocument } from '$types/todo';
 	import { formDataToObject } from '$utils/object';
+	import { todoStore } from '$stores/todoStore';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
@@ -11,8 +12,9 @@
 
 	export let data: PageData;
 	type DataDocuments = typeof data.todos.documents;
+	$todoStore = data.todos.documents;
 
-	$: todos = data.todos.documents.sort((a, b) => {
+	$: todos = $todoStore.sort((a, b) => {
 		// Check if the todo is checked
 		const checkedRes = Number(a.checked ?? false) - Number(b.checked ?? false);
 		if (checkedRes !== 0) return checkedRes;
@@ -25,31 +27,25 @@
 	let titleEl: HTMLInputElement;
 
 	// Progressive enhancement functions
-	const updateTodo = (e: CustomEvent<TodoDocument>) => {
-		const todo = e.detail;
-		const index = data.todos.documents.findIndex((t) => t.$id === todo.$id);
-		if (index !== -1) data.todos.documents[index] = todo;
-	};
-
 	const handleSubmit: SubmitFunction<ActionData> = ({ data: formData }) => {
 		const dataObj = formDataToObject(formData, { transformers: { points: Number } });
 		if (!isAddTodoInput(dataObj)) return;
 
 		// Optimistically add the todo
+		const id = uuidv4();
 		const tempTodo = {
 			...dataObj,
 			checked: false,
 			disabled: true,
-			tempId: uuidv4(),
-			$id: '',
+			tempId: id,
+			$id: id,
 			$collectionId: '',
 			$databaseId: '',
 			$createdAt: '',
 			$updatedAt: '',
 			$permissions: []
 		};
-		const previousDocs = [...data.todos.documents];
-		data.todos.documents = [tempTodo, ...data.todos.documents];
+		todoStore.add(tempTodo);
 
 		// Reset the form state
 		todoTitle = '';
@@ -59,17 +55,16 @@
 		return async ({ result, update }) => {
 			if (['invalid', 'error'].includes(result.type)) {
 				// Revert the optimistic update
-				data.todos.documents = [...previousDocs];
-			}
-			if (result.type === 'success') {
-				data.todos.documents = data.todos.documents.reduce<DataDocuments>((acc, todo) => {
-					if (todo.tempId === tempTodo.tempId && result.data) {
-						// Update the todo with the new data - Keep the temp id to avoid
-						// changing the list key
-						return [...acc, { ...result.data, tempId: todo.tempId }];
-					}
-					return [...acc, todo];
-				}, []);
+				todoStore.remove(tempTodo.$id);
+			} else if (result.type === 'success') {
+				todoStore.update((prevTodos) => {
+					return prevTodos.map((todo) => {
+						if (todo.tempId === tempTodo.tempId) {
+							return { ...todo, ...result.data };
+						}
+						return todo;
+					});
+				});
 			}
 		};
 	};
@@ -98,7 +93,7 @@
 	<div class="todos">
 		{#each todos as todo (todo.tempId || todo.$id)}
 			<div animate:flip={{ duration: 500 }} in:fade out:fade={{ duration: 100 }}>
-				<Todo {todo} disabled={todo.disabled} on:update={updateTodo} />
+				<Todo {todo} disabled={todo.disabled} />
 			</div>
 		{/each}
 	</div>

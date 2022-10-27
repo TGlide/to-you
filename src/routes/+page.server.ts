@@ -8,6 +8,7 @@ import { formDataToObject, objectFilter } from '$utils/object';
 import { getSession } from '$lib/session.server';
 import { Query } from 'appwrite';
 import type { Actions, PageServerLoad } from './$types';
+import { sleep } from '$utils/async';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const session = getSession(cookies);
@@ -44,6 +45,7 @@ export const actions: Actions = {
 		);
 	},
 	delete: async ({ request }) => {
+		await sleep(3000);
 		const { id } = formDataToObject(await request.formData());
 
 		if (!id || typeof id !== 'string') {

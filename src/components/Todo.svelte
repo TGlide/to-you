@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
+	import { todoStore } from '$stores/todoStore';
 	import type { TodoDocument } from '$types/todo';
 	import Checkbox from '$UI/Checkbox.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -8,48 +9,34 @@
 	export let todo: TodoDocument;
 	export let disabled: boolean = false;
 
-	// Create fake todo document for optimistic UI
-	// $: todo = isTodoDocument(todoProp)
-	// 	? todoProp
-	// 	: {
-	// 			...todoProp,
-	// 			checked: false,
-	// 			$id: '',
-	// 			$collectionId: '',
-	// 			$databaseId: '',
-	// 			$createdAt: '',
-	// 			$updatedAt: '',
-	// 			$permissions: []
-	// 	  };
-
-	const dispatch = createEventDispatcher<{
-		update: TodoDocument;
-	}>();
-</script>
-
-<form
-	class="todo"
-	method="POST"
-	action="/?/delete"
-	class:disabled
-	use:enhance={({ action }) => {
+	const handleSubmit: SubmitFunction = ({ action }) => {
 		if (action.href.includes('update')) {
 			// Optimistically update the todo
 			const oldTodo = { ...todo };
-			dispatch('update', { ...oldTodo, checked: !todo.checked });
+			todoStore.updateTodo(todo.$id, { ...todo, checked: !todo.checked });
 
 			return async ({ result, update: _update }) => {
 				if (['invalid', 'error'].includes(result.type)) {
 					// Revert the optimistic update
-					dispatch('update', { ...oldTodo });
+					todoStore.updateTodo(todo.id, oldTodo);
 				}
+			};
+		} else if (action.href.includes('delete')) {
+			// Optimistically remove the todo
+			const oldTodo = { ...todo };
+			todoStore.remove(todo.$id);
 
-				// We don't call update to prevent the page data to being updated with old data
-				// TODO: Find a better way to do this
+			return async ({ result, update: _update }) => {
+				if (['invalid', 'error'].includes(result.type)) {
+					// Revert the optimistic update
+					todoStore.add(oldTodo);
+				}
 			};
 		}
-	}}
->
+	};
+</script>
+
+<form class="todo" method="POST" action="/?/delete" class:disabled use:enhance={handleSubmit}>
 	<input type="hidden" name="id" value={todo.$id} />
 	<input type="hidden" name="checked" value={!todo.checked} />
 
