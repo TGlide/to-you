@@ -7,7 +7,7 @@ export type Todo = {
 	checked?: boolean;
 };
 
-export type AddTodoInput = Pick<Todo, 'title'>;
+export type AddTodoInput = Pick<Todo, 'title' | 'points'>;
 export type UpdateTodoInput = Partial<Todo> & { id: string };
 
 export type TodoDocument = ModelsDocument<Todo>;
@@ -22,7 +22,8 @@ export function isTodo(value: unknown): value is Todo {
 
 export function isAddTodoInput(value: unknown): value is AddTodoInput {
 	return isObjectType<AddTodoInput>(value, {
-		title: 'string'
+		title: 'string',
+		points: 'number'
 	});
 }
 

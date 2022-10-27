@@ -6,8 +6,8 @@ import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoDocument } from '$t
 import { formDataToObject, objectFilter } from '$utils/object';
 
 import { getSession } from '$lib/session.server';
-import type { Actions, PageServerLoad } from './$types';
 import { Query } from 'appwrite';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const session = getSession(cookies);
@@ -27,21 +27,27 @@ export const load: PageServerLoad = async ({ cookies }) => {
 export const actions: Actions = {
 	add: async ({ request, cookies }) => {
 		const session = getSession(cookies);
-		const data = formDataToObject(await request.formData());
+		const data = formDataToObject(await request.formData(), { transformers: { points: Number } });
+
 		if (!isAddTodoInput(data)) {
-			throw new Error('Invalid data');
+			return console.error('Error on todo add: Invalid data');
 		}
 
-		await databases.createDocument<TodoDocument>(DATABASE_ID, TODO_COLLECTION_ID, 'unique()', {
-			...data,
-			session_key: session
-		});
+		return await databases.createDocument<TodoDocument>(
+			DATABASE_ID,
+			TODO_COLLECTION_ID,
+			'unique()',
+			{
+				...data,
+				session_key: session
+			}
+		);
 	},
 	delete: async ({ request }) => {
 		const { id } = formDataToObject(await request.formData());
 
-		if (typeof id !== 'string') {
-			throw new Error('Invalid data');
+		if (!id || typeof id !== 'string') {
+			return console.error('Error on todo delete: Invalid data');
 		}
 
 		await databases.deleteDocument(DATABASE_ID, TODO_COLLECTION_ID, id);
@@ -51,8 +57,9 @@ export const actions: Actions = {
 			transformers: { checked: (v) => v === 'true' },
 			defaultValues: { checked: false }
 		});
+
 		if (!isUpdateTodoInput(data)) {
-			throw new Error('Invalid data');
+			return console.error('Error on todo update: Invalid data');
 		}
 
 		const updateObj = objectFilter(data, (k) => k !== 'id');

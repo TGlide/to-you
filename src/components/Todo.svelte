@@ -6,6 +6,21 @@
 	import Icon from './Icon.svelte';
 
 	export let todo: TodoDocument;
+	export let disabled: boolean = false;
+
+	// Create fake todo document for optimistic UI
+	// $: todo = isTodoDocument(todoProp)
+	// 	? todoProp
+	// 	: {
+	// 			...todoProp,
+	// 			checked: false,
+	// 			$id: '',
+	// 			$collectionId: '',
+	// 			$databaseId: '',
+	// 			$createdAt: '',
+	// 			$updatedAt: '',
+	// 			$permissions: []
+	// 	  };
 
 	const dispatch = createEventDispatcher<{
 		update: TodoDocument;
@@ -16,6 +31,7 @@
 	class="todo"
 	method="POST"
 	action="/?/delete"
+	class:disabled
 	use:enhance={({ action }) => {
 		if (action.href.includes('update')) {
 			// Optimistically update the todo
@@ -55,6 +71,19 @@
 </form>
 
 <style lang="postcss">
+	form {
+		transition: opacity var(--transition-appearance);
+
+		&.disabled {
+			cursor: not-allowed;
+			opacity: 0.5;
+
+			& :global(*) {
+				pointer-events: none;
+			}
+		}
+	}
+
 	.todo {
 		display: flex;
 		align-items: center;
