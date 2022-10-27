@@ -59,7 +59,7 @@
 				todoStore.update((prevTodos) => {
 					return prevTodos.map((todo) => {
 						if (todo.tempId === tempTodo.tempId) {
-							return { ...todo, ...result.data };
+							return { ...todo, ...result.data, disabled: false };
 						}
 						return todo;
 					});
