@@ -114,6 +114,6 @@ A to-do app repo wouldn't be complete without it's own to-do list!
 - [X] Browser session
 - [X] Addition progressive enhancement
 - [X] Deletion progressive enhancement
-- [ ] Update progressive enhancement
+- [X] Update progressive enhancement
 - [ ] Rewards system
 - [ ] Keyboard controls
