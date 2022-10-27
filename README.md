@@ -117,3 +117,4 @@ A to-do app repo wouldn't be complete without it's own to-do list!
 - [X] Update progressive enhancement
 - [ ] Rewards system
 - [ ] Keyboard controls
+- [ ] Dark mode
