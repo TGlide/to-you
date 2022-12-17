@@ -9,6 +9,8 @@
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 	import type { ActionData, PageData } from './$types';
+	import Icon from '$components/Icon.svelte';
+	import Counter from '$UI/Counter.svelte';
 
 	export let data: PageData;
 	$todoStore = data.todos.documents;
@@ -67,9 +69,20 @@
 			}
 		};
 	};
+
+	$: points = todos.reduce((acc, todo) => {
+		if (!todo.checked) return acc;
+		return acc + (todo.points ?? 0);
+	}, 0);
 </script>
 
 <div class="container">
+	<div class="header">
+		<div class="points">
+			<Counter value={points} />
+			<Icon icon="star" />
+		</div>
+	</div>
 	<form class="add-wrapper" method="POST" action="?/add" use:enhance={handleSubmit}>
 		<input
 			bind:this={titleEl}
@@ -100,14 +113,20 @@
 
 <style lang="postcss">
 	.container {
-		padding-top: var(--space-32);
+		padding-top: var(--space-16);
 	}
 
-	.todos {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-12);
-		margin-top: var(--space-16);
+	.header {
+		& .points {
+			display: flex;
+			align-items: center;
+			gap: var(--space-4);
+
+			color: var(--palette-cyan-30);
+			font-weight: var(--fw-bold);
+
+			margin-left: auto;
+		}
 	}
 
 	.add-wrapper {
@@ -115,6 +134,8 @@
 		align-items: center;
 		gap: var(--space-8);
 		width: 100%;
+
+		margin-top: var(--space-16);
 
 		& input {
 			min-width: 0;
@@ -127,5 +148,12 @@
 				flex-basis: 5rem;
 			}
 		}
+	}
+
+	.todos {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-12);
+		margin-top: var(--space-16);
 	}
 </style>

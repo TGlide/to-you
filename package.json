@@ -12,7 +12,8 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint . --max-warnings 0",
 		"format": "prettier --plugin-search-dir . --write .",
 		"aw:local": "node ./scripts/init-local.js",
-		"aw:prod": "node ./scripts/init-prod.js"
+		"aw:prod": "node ./scripts/init-prod.js",
+		"aw:deploy": "appwrite deploy collection --all"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.25.0",
