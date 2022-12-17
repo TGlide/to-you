@@ -27,6 +27,11 @@
 	let todoPoints = 1;
 	let titleEl: HTMLInputElement;
 
+	$: points = $todoStore.reduce((acc, todo) => {
+		if (!todo.checked) return acc;
+		return acc + (todo.points ?? 0);
+	}, 0);
+
 	// Progressive enhancement functions
 	const handleSubmit: SubmitFunction<ActionData> = ({ data: formData }) => {
 		const dataObj = formDataToObject(formData, { transformers: { points: Number } });
@@ -70,10 +75,18 @@
 		};
 	};
 
-	$: points = $todoStore.reduce((acc, todo) => {
-		if (!todo.checked) return acc;
-		return acc + (todo.points ?? 0);
-	}, 0);
+	const handleClear: SubmitFunction<ActionData> = () => {
+		// Optimistically delete the todos
+		const checkedTodos = $todoStore.filter((t) => t.checked);
+		todoStore.set($todoStore.filter((t) => !t.checked));
+
+		return async ({ result }) => {
+			if (['invalid', 'error'].includes(result.type)) {
+				// Revert the optimistic update
+				todoStore.set([...$todoStore, ...checkedTodos]);
+			}
+		};
+	};
 </script>
 
 <div class="container">
@@ -81,6 +94,16 @@
 		<div class="points">
 			<Counter value={points} />
 			<Icon icon="star" />
+		</div>
+		<div class="actions">
+			<form method="POST" action="?/deleteChecked" use:enhance={handleClear}>
+				<button
+					class="clickable color-red-60"
+					disabled={$todoStore.filter((t) => t.checked).length === 0}
+				>
+					Clear all completed
+				</button>
+			</form>
 		</div>
 	</div>
 	<form class="add-wrapper" method="POST" action="?/add" use:enhance={handleSubmit}>
@@ -117,6 +140,10 @@
 	}
 
 	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
 		& .points {
 			display: flex;
 			align-items: center;
@@ -124,8 +151,6 @@
 
 			color: var(--palette-cyan-30);
 			font-weight: var(--fw-bold);
-
-			margin-left: auto;
 		}
 	}
 

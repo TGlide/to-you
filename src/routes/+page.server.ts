@@ -52,6 +52,17 @@ export const actions: Actions = {
 
 		await databases.deleteDocument(DATABASE_ID, TODO_COLLECTION_ID, id);
 	},
+	deleteChecked: async () => {
+		const checkedTodos = await databases.listDocuments(DATABASE_ID, TODO_COLLECTION_ID, [
+			Query.equal('checked', true)
+		]);
+
+		const deletePromises = checkedTodos.documents.map((todo) =>
+			databases.deleteDocument(DATABASE_ID, TODO_COLLECTION_ID, todo.$id)
+		);
+
+		await Promise.all(deletePromises);
+	},
 	update: async ({ request }) => {
 		const data = formDataToObject(await request.formData(), {
 			transformers: { checked: (v) => v === 'true' },
