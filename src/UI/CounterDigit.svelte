@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { range } from '$utils/array';
 	import { pxToRem } from '$utils/style';
 	import { onMount } from 'svelte';
@@ -6,7 +7,7 @@
 	export let fontSize = 16;
 	export let value = 0;
 
-	let initialized = false;
+	let initialized = !browser;
 	$: transformStyle = `translateY(-${(initialized ? value : 10) * pxToRem(fontSize)}rem)`;
 	$: ulStyle = `--font-size: ${pxToRem(fontSize)}rem`;
 

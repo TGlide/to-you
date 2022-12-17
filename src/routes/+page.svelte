@@ -70,7 +70,7 @@
 		};
 	};
 
-	$: points = todos.reduce((acc, todo) => {
+	$: points = $todoStore.reduce((acc, todo) => {
 		if (!todo.checked) return acc;
 		return acc + (todo.points ?? 0);
 	}, 0);
