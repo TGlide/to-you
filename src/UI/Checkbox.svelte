@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
-	import { elasticOut, linear } from 'svelte/easing';
-	import { fade, type TransitionConfig } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	export let checked: boolean = false;
 </script>
