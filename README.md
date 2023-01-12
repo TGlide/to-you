@@ -28,7 +28,7 @@
     - [2. Install front-end dependencies](#2-install-front-end-dependencies)
     - [3. Setup appwrite instance](#3-setup-appwrite-instance)
     - [4. Setup environment variables](#4-setup-environment-variables)
-    - [5. Setup appwrite database & collections](#5-setup-appwrite-database--collections)
+    - [5. Setup appwrite database \& collections](#5-setup-appwrite-database--collections)
 - [Usage](#usage)
   - [Run App](#run-app)
   - [Preview](#preview)
@@ -88,7 +88,7 @@ APPWRITE_API_KEY
 
 #### 5. Setup appwrite database & collections
 
-Run the `aw:local` script to setup the appwrite CLI, then run `appwrite deploy collection --all` to deploy the collections and database.
+Run the `aw:local` script to setup the appwrite CLI, then run the `aw:deploy` script to deploy the collections and database.
 Setup the rest of the environment variables in the `.env` file:
 
 ```sh
