@@ -8,6 +8,7 @@ import { formDataToObject, objectFilter } from '$utils/object';
 import { getSession } from '$lib/session.server';
 import { Query } from 'appwrite';
 import type { Actions, PageServerLoad } from './$types';
+import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const session = getSession(cookies);
@@ -30,7 +31,7 @@ export const actions: Actions = {
 		const data = formDataToObject(await request.formData(), { transformers: { points: Number } });
 
 		if (!isAddTodoInput(data)) {
-			return console.error('Error on todo add: Invalid data');
+			return fail(400);
 		}
 
 		return await databases.createDocument<TodoModelDocument>(
@@ -47,7 +48,7 @@ export const actions: Actions = {
 		const { id } = formDataToObject(await request.formData());
 
 		if (!id || typeof id !== 'string') {
-			return console.error('Error on todo delete: Invalid data');
+			return fail(400);
 		}
 
 		await databases.deleteDocument(DATABASE_ID, TODO_COLLECTION_ID, id);
@@ -70,7 +71,7 @@ export const actions: Actions = {
 		});
 
 		if (!isUpdateTodoInput(data)) {
-			return console.error('Error on todo update: Invalid data');
+			return fail(400);
 		}
 
 		const updateObj = objectFilter(data, (k) => k !== 'id');

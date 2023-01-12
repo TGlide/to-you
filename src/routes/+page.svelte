@@ -33,7 +33,7 @@
 	}, 0);
 
 	// Progressive enhancement functions
-	const handleSubmit: SubmitFunction<ActionData> = ({ data: formData }) => {
+	const handleSubmit: SubmitFunction = ({ data: formData }) => {
 		const dataObj = formDataToObject(formData, { transformers: { points: Number } });
 		if (!isAddTodoInput(dataObj)) return;
 
@@ -48,7 +48,7 @@
 		titleEl.focus();
 
 		return async ({ result }) => {
-			if (['invalid', 'error'].includes(result.type)) {
+			if (['failure', 'error'].includes(result.type)) {
 				// Revert the optimistic update
 				todos.remove(id);
 			} else if (result.type === 'success') {
@@ -64,13 +64,13 @@
 		};
 	};
 
-	const handleClear: SubmitFunction<ActionData> = () => {
+	const handleClear: SubmitFunction = () => {
 		// Optimistically delete the todos
 		const checkedTodos = $todos.filter((t) => t.checked);
 		todos.set($todos.filter((t) => !t.checked));
 
 		return async ({ result }) => {
-			if (['invalid', 'error'].includes(result.type)) {
+			if (['failure', 'error'].includes(result.type)) {
 				// Revert the optimistic update
 				todos.set([...$todos, ...checkedTodos]);
 			}

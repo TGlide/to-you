@@ -3,7 +3,8 @@
 	import { todos } from '$stores/todoStore';
 	import type { TodoDocument } from '$types/todo';
 	import Checkbox from '$UI/Checkbox.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { sleep } from '$utils/async';
+	import { createEventDispatcher, tick } from 'svelte';
 	import Icon from './Icon.svelte';
 
 	export let todo: TodoDocument;
@@ -28,8 +29,9 @@
 		todos.remove(todo.$id);
 
 		return async ({ result, update: _update }) => {
-			if (['invalid', 'error'].includes(result.type)) {
+			if (['failure', 'error'].includes(result.type)) {
 				// Revert the optimistic update
+				await sleep(500);
 				todos.add(oldTodo);
 			}
 		};
