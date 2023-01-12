@@ -1,7 +1,7 @@
 import { DATABASE_ID, TODO_COLLECTION_ID } from '$env/static/private';
 import { databases } from '$lib/appwrite.server';
 import { isModelsDocumentList } from '$types/appwrite';
-import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoDocument } from '$types/todo';
+import { isAddTodoInput, isTodo, isUpdateTodoInput, type TodoModelDocument } from '$types/todo';
 
 import { formDataToObject, objectFilter } from '$utils/object';
 
@@ -12,12 +12,12 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ cookies }) => {
 	const session = getSession(cookies);
 	const todos = await databases.listDocuments(DATABASE_ID, TODO_COLLECTION_ID, [
-		Query.equal('session_key', session)
+		Query.equal('session_key', session),
 	]);
 
 	if (isModelsDocumentList(todos, isTodo)) {
 		return {
-			todos
+			todos,
 		};
 	}
 
@@ -33,13 +33,13 @@ export const actions: Actions = {
 			return console.error('Error on todo add: Invalid data');
 		}
 
-		return await databases.createDocument<TodoDocument>(
+		return await databases.createDocument<TodoModelDocument>(
 			DATABASE_ID,
 			TODO_COLLECTION_ID,
 			'unique()',
 			{
 				...data,
-				session_key: session
+				session_key: session,
 			}
 		);
 	},
@@ -54,7 +54,7 @@ export const actions: Actions = {
 	},
 	deleteChecked: async () => {
 		const checkedTodos = await databases.listDocuments(DATABASE_ID, TODO_COLLECTION_ID, [
-			Query.equal('checked', true)
+			Query.equal('checked', true),
 		]);
 
 		const deletePromises = checkedTodos.documents.map((todo) =>
@@ -66,7 +66,7 @@ export const actions: Actions = {
 	update: async ({ request }) => {
 		const data = formDataToObject(await request.formData(), {
 			transformers: { checked: (v) => v === 'true' },
-			defaultValues: { checked: false }
+			defaultValues: { checked: false },
 		});
 
 		if (!isUpdateTodoInput(data)) {
@@ -75,11 +75,11 @@ export const actions: Actions = {
 
 		const updateObj = objectFilter(data, (k) => k !== 'id');
 
-		await databases.updateDocument<TodoDocument>(
+		await databases.updateDocument<TodoModelDocument>(
 			DATABASE_ID,
 			TODO_COLLECTION_ID,
 			data.id,
 			updateObj
 		);
-	}
+	},
 };

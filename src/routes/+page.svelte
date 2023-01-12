@@ -4,7 +4,7 @@
 	import Todo from '$components/Todo.svelte';
 	import { isAddTodoInput, type TodoDocument } from '$types/todo';
 	import { formDataToObject } from '$utils/object';
-	import { todoStore } from '$stores/todoStore';
+	import { todos } from '$stores/todoStore';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
@@ -13,9 +13,9 @@
 	import Counter from '$UI/Counter.svelte';
 
 	export let data: PageData;
-	$todoStore = data.todos.documents;
+	$todos = data.todos.documents;
 
-	$: todos = $todoStore.sort((a, b) => {
+	$: todosSorted = $todos.sort((a, b) => {
 		// Check if the todo is checked
 		const checkedRes = Number(a.checked ?? false) - Number(b.checked ?? false);
 		if (checkedRes !== 0) return checkedRes;
@@ -27,7 +27,7 @@
 	let todoPoints = 1;
 	let titleEl: HTMLInputElement;
 
-	$: points = $todoStore.reduce((acc, todo) => {
+	$: points = $todos.reduce((acc, todo) => {
 		if (!todo.checked) return acc;
 		return acc + (todo.points ?? 0);
 	}, 0);
@@ -39,19 +39,8 @@
 
 		// Optimistically add the todo
 		const id = uuidv4();
-		const tempTodo = {
-			...dataObj,
-			checked: false,
-			disabled: true,
-			tempId: id,
-			$id: id,
-			$collectionId: '',
-			$databaseId: '',
-			$createdAt: '',
-			$updatedAt: '',
-			$permissions: []
-		};
-		todoStore.add(tempTodo);
+		const tempTodo: TodoDocument = { ...dataObj, checked: false, disabled: true, $id: id };
+		todos.add(tempTodo);
 
 		// Reset the form state
 		todoTitle = '';
@@ -61,11 +50,11 @@
 		return async ({ result }) => {
 			if (['invalid', 'error'].includes(result.type)) {
 				// Revert the optimistic update
-				todoStore.remove(tempTodo.$id);
+				todos.remove(id);
 			} else if (result.type === 'success') {
-				todoStore.update((prevTodos) => {
+				todos.update((prevTodos) => {
 					return prevTodos.map((todo) => {
-						if (todo.tempId === tempTodo.tempId) {
+						if (todo.$id === id) {
 							return { ...todo, ...result.data, disabled: false };
 						}
 						return todo;
@@ -77,13 +66,13 @@
 
 	const handleClear: SubmitFunction<ActionData> = () => {
 		// Optimistically delete the todos
-		const checkedTodos = $todoStore.filter((t) => t.checked);
-		todoStore.set($todoStore.filter((t) => !t.checked));
+		const checkedTodos = $todos.filter((t) => t.checked);
+		todos.set($todos.filter((t) => !t.checked));
 
 		return async ({ result }) => {
 			if (['invalid', 'error'].includes(result.type)) {
 				// Revert the optimistic update
-				todoStore.set([...$todoStore, ...checkedTodos]);
+				todos.set([...$todos, ...checkedTodos]);
 			}
 		};
 	};
@@ -99,7 +88,7 @@
 			<form method="POST" action="?/deleteChecked" use:enhance={handleClear}>
 				<button
 					class="clickable color-red-60"
-					disabled={$todoStore.filter((t) => t.checked).length === 0}
+					disabled={$todos.filter((t) => t.checked).length === 0}
 				>
 					Clear all completed
 				</button>
@@ -126,7 +115,7 @@
 	</form>
 
 	<div class="todos">
-		{#each todos as todo (todo.tempId || todo.$id)}
+		{#each todosSorted as todo (todo.$id)}
 			<div animate:flip={{ duration: 500 }} in:fade out:fade={{ duration: 100 }}>
 				<Todo {todo} disabled={todo.disabled} />
 			</div>

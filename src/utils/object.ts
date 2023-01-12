@@ -39,7 +39,10 @@ type KeyTypesMap<T> = Record<keyof T, Array<string> | ((v: unknown) => boolean) 
  * };
  * ```
  */
-export const isObjectType = <T>(object: unknown, keyTypesMap: KeyTypesMap<T>): object is T => {
+export const isObjectType = <T>(
+	object: unknown,
+	keyTypesMap: Partial<KeyTypesMap<T>>
+): object is T => {
 	if (typeof object !== 'object' || object === null) {
 		return false;
 	}
@@ -55,7 +58,7 @@ export const isObjectType = <T>(object: unknown, keyTypesMap: KeyTypesMap<T>): o
 			if (typeof value !== check) {
 				return false;
 			}
-		} else if (!check.includes(typeof value)) {
+		} else if (!check?.includes(typeof value)) {
 			return false;
 		}
 	}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance, type SubmitFunction } from '$app/forms';
-	import { todoStore } from '$stores/todoStore';
+	import { todos } from '$stores/todoStore';
 	import type { TodoDocument } from '$types/todo';
 	import Checkbox from '$UI/Checkbox.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -9,56 +9,69 @@
 	export let todo: TodoDocument;
 	export let disabled: boolean = false;
 
-	const handleSubmit: SubmitFunction = ({ action }) => {
-		if (action.href.includes('update')) {
-			// Optimistically update the todo
-			const oldTodo = { ...todo };
-			todoStore.updateTodo(todo.$id, { ...todo, checked: !todo.checked });
+	const handleUpdate: SubmitFunction = () => {
+		// Optimistically update the todo
+		const oldTodo = { ...todo };
+		todos.updateTodo(todo.$id, { ...todo, checked: !todo.checked });
 
-			return async ({ result, update: _update }) => {
-				if (['invalid', 'error'].includes(result.type)) {
-					// Revert the optimistic update
-					todoStore.updateTodo(todo.id, oldTodo);
-				}
-			};
-		} else if (action.href.includes('delete')) {
-			// Optimistically remove the todo
-			const oldTodo = { ...todo };
-			todoStore.remove(todo.$id);
+		return async ({ result, update: _update }) => {
+			if (['invalid', 'error'].includes(result.type)) {
+				// Revert the optimistic update
+				todos.updateTodo(todo.$id, oldTodo);
+			}
+		};
+	};
 
-			return async ({ result, update: _update }) => {
-				if (['invalid', 'error'].includes(result.type)) {
-					// Revert the optimistic update
-					todoStore.add(oldTodo);
-				}
-			};
-		}
+	const handleDelete: SubmitFunction = () => {
+		// Optimistically remove the todo
+		const oldTodo = { ...todo };
+		todos.remove(todo.$id);
+
+		return async ({ result, update: _update }) => {
+			if (['invalid', 'error'].includes(result.type)) {
+				// Revert the optimistic update
+				todos.add(oldTodo);
+			}
+		};
 	};
 </script>
 
-<form class="todo" method="POST" action="/?/delete" class:disabled use:enhance={handleSubmit}>
-	<input type="hidden" name="id" value={todo.$id} />
-	<input type="hidden" name="checked" value={!todo.checked} />
+<div class="todo" class:disabled>
+	<form method="POST" action="/?/update" use:enhance={handleUpdate}>
+		<input type="hidden" name="id" value={todo.$id} />
+		<input type="hidden" name="checked" value={!todo.checked} />
 
-	<!-- TODO: Implement progressively enhanced debouncer -->
-	<Checkbox checked={todo.checked} formaction="/?/update" />
+		<!-- TODO: Implement progressively enhanced debouncer -->
+		<Checkbox checked={todo.checked} />
 
-	<div class="title" class:checked={todo.checked}>
-		<span>{todo.title}</span>
-	</div>
+		<div class="title" class:checked={todo.checked}>
+			<span>{todo.title}</span>
+		</div>
 
-	<div class="points">
-		<span>{todo.points}</span>
-		<Icon icon="star" />
-	</div>
+		<div class="points">
+			<span>{todo.points}</span>
+			<Icon icon="star" />
+		</div>
 
-	<button class="clickable">
-		<Icon icon="trash-2" />
-	</button>
-</form>
+		<form method="POST" action="/?/delete" use:enhance={handleDelete}>
+			<input type="hidden" name="id" value={todo.$id} />
+			<button class="clickable">
+				<Icon icon="trash-2" />
+			</button>
+		</form>
+	</form>
+</div>
 
 <style lang="postcss">
 	form {
+		display: contents;
+	}
+
+	.todo {
+		display: flex;
+		align-items: center;
+		width: 100%;
+
 		transition: opacity var(--transition-appearance);
 
 		&.disabled {
@@ -69,12 +82,6 @@
 				pointer-events: none;
 			}
 		}
-	}
-
-	.todo {
-		display: flex;
-		align-items: center;
-		width: 100%;
 	}
 
 	.title {

@@ -1,11 +1,12 @@
-import type { ModelsDocument } from '$types/appwrite';
-import type { Todo } from '$types/todo';
+import type { Todo, TodoDocument } from '$types/todo';
 import { writable } from 'svelte/store';
 
-const createTodoStore = (defaultValue?: ModelsDocument<Todo>[]) => {
-	const store = writable<ModelsDocument<Todo>[]>(defaultValue ?? []);
+type Store = TodoDocument[];
 
-	const add = (todo: ModelsDocument<Todo>) => {
+const createTodoStore = () => {
+	const store = writable<Store>([]);
+
+	const add = (todo: TodoDocument) => {
 		store.update((todos) => [...todos, todo]);
 	};
 
@@ -19,7 +20,7 @@ const createTodoStore = (defaultValue?: ModelsDocument<Todo>[]) => {
 				if (todo.$id === id) {
 					return {
 						...todo,
-						...data
+						...data,
 					};
 				}
 
@@ -31,4 +32,4 @@ const createTodoStore = (defaultValue?: ModelsDocument<Todo>[]) => {
 	return { ...store, add, remove, updateTodo };
 };
 
-export const todoStore = createTodoStore([]);
+export const todos = createTodoStore();
